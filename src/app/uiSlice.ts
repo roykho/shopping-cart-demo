@@ -1,11 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-
-interface UIState {
-    isMobileMenuOpen: boolean;
-}
+import { UIState } from './types';
 
 const initialState: UIState = {
     isMobileMenuOpen: false,
+    isHydrated: false,
 };
 
 const uiSlice = createSlice({
@@ -21,6 +19,9 @@ const uiSlice = createSlice({
         openMobileMenu(state) {
             state.isMobileMenuOpen = true;
         },
+        setHydrated(state) {
+            state.isHydrated = true;
+        },
     },
 });
 
@@ -28,7 +29,7 @@ const uiSlice = createSlice({
 const { actions, reducer } = uiSlice;
 
 // Extract and export each action creator by name
-export const { toggleMobileMenu, closeMobileMenu, openMobileMenu } = actions;
+export const { toggleMobileMenu, closeMobileMenu, openMobileMenu, setHydrated } = actions;
 
 // Export the reducer, either as a default or named export
 export default reducer;

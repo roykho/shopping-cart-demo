@@ -1,20 +1,23 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { CartItem, CartState } from './types';
 
-interface CartItem {
-    name: string;
-    price: number;
-}
-
-interface CartState {
-    items: CartItem[];
-    isDropdownOpen: boolean;
-}
+// Load cart from localStorage or use default
+const loadCartFromStorage = (): CartItem[] => {
+    if (typeof window !== 'undefined') {
+        const savedCart = localStorage.getItem('cart');
+        if (savedCart) {
+            try {
+                return JSON.parse(savedCart);
+            } catch (error) {
+                console.error('Error parsing cart from localStorage:', error);
+            }
+        }
+    }
+    return [];
+};
 
 const initialState: CartState = {
-    items: [{
-        name: 'HeadPhones',
-        price: 59.99,
-    }],
+    items: loadCartFromStorage(),
     isDropdownOpen: false,
 };
 
@@ -23,13 +26,34 @@ const cartSlice = createSlice({
     initialState,
     reducers: {
         addItem(state, action: PayloadAction<CartItem>) {
-            state.items.push(action.payload);
+            const existingItem = state.items.find(item => item.id === action.payload.id);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                state.items.push({ ...action.payload, quantity: 1 });
+            }
+            // Save to localStorage
+            if (typeof window !== 'undefined') {
+                localStorage.setItem('cart', JSON.stringify(state.items));
+            }
         },
         removeItem(state, action: PayloadAction<number>) {
-            state.items.splice(action.payload, 1);
+            const index = state.items.findIndex(item => item.id === action.payload);
+            if (index !== -1) {
+                state.items.splice(index, 1);
+            }
+            // Save to localStorage
+            if (typeof window !== 'undefined') {
+                localStorage.setItem('cart', JSON.stringify(state.items));
+            }
         },
+
         clearCart(state) {
             state.items = [];
+            // Save to localStorage
+            if (typeof window !== 'undefined') {
+                localStorage.setItem('cart', JSON.stringify(state.items));
+            }
         },
         toggleDropdown(state) {
             state.isDropdownOpen = !state.isDropdownOpen;

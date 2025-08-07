@@ -1,10 +1,10 @@
-import Cart from './Cart';
+import { Suspense } from 'react';
+import Products from './components/Products';
 
 export default function Home() {
     return (
-        <>
-            <h1>Hello</h1>
-            <Cart />
-        </>
+        <Suspense fallback={<div>Loading...</div>}>
+            <Products />
+        </Suspense>
     );
 }

@@ -5,18 +5,19 @@ import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { FaShoppingCart  } from 'react-icons/fa';
-import { RootState } from '../store';
+import { RootState } from '../types';
 import CartDropdown from './CartDropdown';
 import { toggleDropdown, closeDropdown } from '../cartSlice';
-import { toggleMobileMenu, closeMobileMenu } from '../uiSlice';
+import { toggleMobileMenu, closeMobileMenu, setHydrated } from '../uiSlice';
 
 const NavBar = () => {
     const pathname = usePathname();
     const dispatch = useDispatch();
     const cartItems = useSelector((state: RootState) => state.cart.items);
-    const itemCount = cartItems.length;
+    const itemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
     const isCartDropdownOpen = useSelector((state: RootState) => state.cart.isDropdownOpen);
     const isMobileMenuOpen = useSelector((state: RootState) => state.ui.isMobileMenuOpen);
+    const isHydrated = useSelector((state: RootState) => state.ui.isHydrated);
 
     const isActive = (path: string) => pathname === path;
 
@@ -26,6 +27,10 @@ const NavBar = () => {
     };
 
     const cartDropdownRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        dispatch(setHydrated());
+    }, [dispatch]);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -96,7 +101,7 @@ const NavBar = () => {
                             >
                                 <div className="relative">
                                     <FaShoppingCart className="text-2xl" />
-                                    {itemCount > 0 && (
+                                    {isHydrated && itemCount > 0 && (
                                         <span className="absolute -bottom-1 -left-1 bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center font-semibold shadow-lg text-[10px]">
                                             {itemCount}
                                         </span>
