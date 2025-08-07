@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaShoppingCart } from 'react-icons/fa';
-import { removeItem, clearCart } from '../cartSlice';
+import { removeItem, clearCart } from '../redux/cartSlice';
 import { CartItem, CartDropdownProps } from '../types';
 
 const CartDropdown = ({ isOpen, cartItems, itemCount, onClose }: CartDropdownProps) => {

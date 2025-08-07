@@ -4,8 +4,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect } from 'react';
-import { RootState } from '../types';
-import { removeItem, hydrateCart } from '../cartSlice';
+import { RootState, CartItem } from '../types';
+import { removeItem, hydrateCart } from '../redux/cartSlice';
 
 const EmptyCart = () => {
     return (
@@ -55,7 +55,7 @@ const Checkout = () => {
                 <div className="bg-white rounded-lg shadow">
                     <div className="p-6">
                         <div className="space-y-4">
-                            {cartItems.map((item) => (
+                            {cartItems.map((item: CartItem) => (
                                 <div key={item.id} className="flex items-center space-x-4 p-4 border-b border-gray-200 last:border-b-0">
                                     <div className="w-16 h-16 rounded-md overflow-hidden">
                                         <Image
@@ -90,12 +90,12 @@ const Checkout = () => {
                         <div className="mt-6 pt-6 border-t border-gray-200">
                             <div className="flex justify-between items-center">
                                 <span className="text-lg font-medium text-gray-900">Total Items:</span>
-                                <span className="text-lg font-medium text-gray-900">{cartItems.reduce((total, item) => total + item.quantity, 0)}</span>
+                                <span className="text-lg font-medium text-gray-900">{cartItems.reduce((total: number, item: CartItem) => total + item.quantity, 0)}</span>
                             </div>
                             <div className="flex justify-between items-center mt-2">
                                 <span className="text-xl font-bold text-gray-900">Total Price:</span>
                                 <span className="text-xl font-bold text-gray-900">
-                                    ${cartItems.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2)}
+                                    ${cartItems.reduce((total: number, item: CartItem) => total + (item.price * item.quantity), 0).toFixed(2)}
                                 </span>
                             </div>
                         </div>

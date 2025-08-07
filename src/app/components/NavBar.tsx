@@ -5,16 +5,16 @@ import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { FaShoppingCart  } from 'react-icons/fa';
-import { RootState } from '../types';
+import { RootState, CartItem } from '../types';
 import CartDropdown from './CartDropdown';
-import { toggleDropdown, closeDropdown } from '../cartSlice';
-import { toggleMobileMenu, closeMobileMenu, setHydrated } from '../uiSlice';
+import { toggleDropdown, closeDropdown, hydrateCart } from '../redux/cartSlice';
+import { toggleMobileMenu, closeMobileMenu, setHydrated } from '../redux/uiSlice';
 
 const NavBar = () => {
     const pathname = usePathname();
     const dispatch = useDispatch();
     const cartItems = useSelector((state: RootState) => state.cart.items);
-    const itemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+    const itemCount = cartItems.reduce((total: number, item: CartItem) => total + item.quantity, 0);
     const isCartDropdownOpen = useSelector((state: RootState) => state.cart.isDropdownOpen);
     const isMobileMenuOpen = useSelector((state: RootState) => state.ui.isMobileMenuOpen);
     const isHydrated = useSelector((state: RootState) => state.ui.isHydrated);
@@ -29,6 +29,18 @@ const NavBar = () => {
     const cartDropdownRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
+        // Hydrate cart from localStorage on component mount
+        if (typeof window !== 'undefined') {
+            const savedCart = localStorage.getItem('cart');
+            if (savedCart) {
+                try {
+                    const parsedCart = JSON.parse(savedCart);
+                    dispatch(hydrateCart(parsedCart));
+                } catch (error) {
+                    console.error('Error parsing cart from localStorage:', error);
+                }
+            }
+        }
         dispatch(setHydrated());
     }, [dispatch]);
 

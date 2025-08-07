@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ProductsState } from './types';
+import { ProductsState } from '../types';
 
 const initialState: ProductsState = {
     currentPage: 1,

@@ -41,4 +41,4 @@ export type CartDropdownProps = {
 };
 
 // Store types
-export type RootState = ReturnType<typeof import('./store').store.getState>;
+export type RootState = ReturnType<typeof import('./redux/store').store.getState>;
