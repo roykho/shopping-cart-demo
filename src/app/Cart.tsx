@@ -5,7 +5,7 @@ import { RootState } from './store';
 
 const Cart = () => {
     const cart = useSelector((state: RootState) => state.cart);
-    console.log(cart);
+
     return <>Cart</>;
 }
 
