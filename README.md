@@ -1,5 +1,29 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Technologies Used
+
+This shopping cart application is built with the following technologies:
+
+### Frontend Framework
+- **[Next.js 15](https://nextjs.org/)** - React framework for production
+- **[React 19](https://react.dev/)** - JavaScript library for building user interfaces
+- **[TypeScript](https://www.typescriptlang.org/)** - Typed JavaScript
+
+### State Management
+- **[Redux Toolkit](https://redux-toolkit.js.org/)** - Official Redux logic package
+- **[React Redux](https://react-redux.js.org/)** - React bindings for Redux
+
+### Styling
+- **[Tailwind CSS](https://tailwindcss.com/)** - Utility-first CSS framework
+- **[PostCSS](https://postcss.org/)** - CSS transformation tool
+
+### Icons
+- **[React Icons](https://react-icons.github.io/react-icons/)** - Popular icon library for React
+
+### Development Tools
+- **[ESLint](https://eslint.org/)** - JavaScript linting utility
+- **[Turbopack](https://turbo.build/pack)** - Fast bundler for development
+
 ## Getting Started
 
 First, run the development server:
