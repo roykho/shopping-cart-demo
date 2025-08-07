@@ -1,6 +1,7 @@
 'use client';
 
 import { useSelector, useDispatch } from 'react-redux';
+import { FaRegFaceSadTear } from 'react-icons/fa6';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect } from 'react';
@@ -9,20 +10,26 @@ import { removeItem, hydrateCart } from '../redux/cartSlice';
 
 const EmptyCart = () => {
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50">
-            <div className="text-center">
-                <div className="text-6xl mb-4">🛒</div>
-                <h1 className="text-2xl font-bold text-gray-900 mb-2">Your cart is empty</h1>
-                <p className="text-gray-600 mb-6">Add some items to your cart to proceed with checkout</p>
-                <Link
-                    href="/"
-                    className="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors"
-                >
-                    Continue Shopping
-                </Link>
-            </div>
-        </div>
-    );
+		<div className='min-h-screen flex items-center justify-center bg-gray-50'>
+			<div className='text-center'>
+				<div className='text-6xl mb-4 flex justify-center'>
+					<FaRegFaceSadTear />
+				</div>
+				<h1 className='text-2xl font-bold text-gray-900 mb-2'>
+					Your cart is empty
+				</h1>
+				<p className='text-gray-600 mb-6'>
+					Add some items to your cart to proceed with checkout
+				</p>
+				<Link
+					href='/'
+					className='inline-flex items-center px-4 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors'
+				>
+					Continue Shopping
+				</Link>
+			</div>
+		</div>
+	);
 };
 
 const Checkout = () => {
