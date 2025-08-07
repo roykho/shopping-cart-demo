@@ -3,12 +3,14 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { BsShop } from 'react-icons/bs';
 import { LiaShoppingBagSolid } from 'react-icons/lia';
+import { FaRegFaceSadTear } from 'react-icons/fa6';
 import { RootState, CartItem } from '../types';
 import CartDropdown from './CartDropdown';
-import { toggleDropdown, closeDropdown, hydrateCart } from '../redux/cartSlice';
+import { toggleDropdown, closeDropdown, hydrateCart, removeItem, clearCart } from '../redux/cartSlice';
 import { toggleMobileMenu, closeMobileMenu, setHydrated } from '../redux/uiSlice';
 
 const NavBar = () => {
@@ -47,8 +49,15 @@ const NavBar = () => {
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
-            if (cartDropdownRef.current && !cartDropdownRef.current.contains(event.target as Node)) {
-                dispatch(closeDropdown());
+            const target = event.target as Node;
+
+            // Check if click is on the cart dropdown container
+            if (cartDropdownRef.current && !cartDropdownRef.current.contains(target)) {
+                // Check if click is on the mobile cart dropdown
+                const mobileCartDropdown = document.querySelector('[data-mobile-cart-dropdown]');
+                if (!mobileCartDropdown || !mobileCartDropdown.contains(target)) {
+                    dispatch(closeDropdown());
+                }
             }
         };
 
@@ -189,6 +198,111 @@ const NavBar = () => {
 						</Link>
 					</div>
 				</div>
+
+				{/* Mobile Cart Dropdown */}
+				<div
+					data-mobile-cart-dropdown
+					className={`md:hidden transition-all duration-300 ${
+						isCartDropdownOpen ? 'block' : 'hidden'
+					}`}
+				>
+					<div className='px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t border-slate-700/50 bg-gradient-to-r from-slate-900 to-slate-800'>
+						<div className='flex items-center justify-between mb-4 px-4'>
+							<h3 className='text-lg font-semibold text-white'>
+								Shopping Cart
+							</h3>
+							<span className='text-sm text-gray-300'>
+								{itemCount} items
+							</span>
+						</div>
+
+						{itemCount > 0 ? (
+							<>
+								<div className='space-y-2 max-h-64 overflow-y-auto'>
+									{cartItems.map((item: CartItem) => (
+										<div
+											key={item.id}
+											className='flex items-center justify-between p-3 bg-slate-700/50 rounded-lg mx-2'
+										>
+											<div className='flex items-center space-x-3 flex-1 min-w-0'>
+												<Image
+													src={item.imageUrl}
+													alt={item.name}
+													width={48}
+													height={48}
+													className='w-12 h-12 object-cover rounded flex-shrink-0'
+												/>
+												<div className='min-w-0 flex-1'>
+													<p className='font-medium text-white truncate'>
+														{item.name}
+													</p>
+													<p className='text-sm text-gray-300'>
+														${item.price} × {item.quantity}
+													</p>
+												</div>
+											</div>
+											<button
+												onClick={(e) => {
+													e.stopPropagation();
+													dispatch(removeItem(item.id));
+												}}
+												className='text-red-400 hover:text-red-300 text-sm font-medium cursor-pointer p-2 -m-2 rounded-md hover:bg-red-500/20 transition-colors duration-200 flex-shrink-0'
+											>
+												Remove
+											</button>
+										</div>
+									))}
+								</div>
+								<div className='border-t border-slate-700/50 pt-3 mt-3 px-4'>
+									<div className='flex items-center justify-between mb-3'>
+										<span className='font-semibold text-white'>
+											Total:
+										</span>
+										<span className='font-semibold text-white'>
+											$
+											{cartItems
+												.reduce(
+													(total: number, item: CartItem) =>
+														total +
+														item.price * item.quantity,
+													0
+												)
+												.toFixed(2)}
+										</span>
+									</div>
+									<div className='flex flex-col space-y-2'>
+										<button
+											onClick={(e) => {
+												e.stopPropagation();
+												dispatch(clearCart());
+											}}
+											className='w-full border border-gray-300 text-gray-300 py-3 px-4 rounded-md hover:bg-slate-700 hover:text-white transition-colors duration-200 text-center cursor-pointer font-medium'
+										>
+											Clear Cart
+										</button>
+										<Link
+											href='/checkout'
+											onClick={(e) => {
+												e.stopPropagation();
+												dispatch(closeDropdown());
+											}}
+											className='w-full bg-blue-500 text-white py-3 px-4 rounded-md hover:bg-blue-600 transition-colors duration-200 text-center block cursor-pointer font-medium'
+										>
+											Checkout
+										</Link>
+									</div>
+								</div>
+							</>
+						) : (
+							<div className='text-center py-8 px-4'>
+								<FaRegFaceSadTear className='text-4xl text-gray-400 mx-auto mb-3' />
+								<p className='text-gray-300'>Your cart is empty</p>
+							</div>
+						)}
+					</div>
+				</div>
+
+
 			</div>
 		</nav>
 	);
