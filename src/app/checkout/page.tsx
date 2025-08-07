@@ -1,7 +1,7 @@
-const checkoutPage = () => {
-    return (
-        <>Checkout Page</>
-    );
-}
+import Checkout from '../components/Checkout';
 
-export default checkoutPage;
+const CheckoutPage = () => {
+    return <Checkout />;
+};
+
+export default CheckoutPage;

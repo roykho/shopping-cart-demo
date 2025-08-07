@@ -30,7 +30,7 @@ const CartDropdown = ({ isOpen, cartItems, itemCount, onClose }: CartDropdownPro
                                                                 alt={item.name}
                                                                 width={48}
                                                                 height={48}
-                                                                className="w-12 h-auto object-cover rounded-lg"
+                                                                className="w-12 h-12 object-cover rounded"
                                                             />
                                                             <div>
                                                                 <p className="font-medium text-gray-900">{item.name}</p>

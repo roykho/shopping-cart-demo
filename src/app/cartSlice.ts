@@ -1,23 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { CartItem, CartState } from './types';
 
-// Load cart from localStorage or use default
-const loadCartFromStorage = (): CartItem[] => {
-    if (typeof window !== 'undefined') {
-        const savedCart = localStorage.getItem('cart');
-        if (savedCart) {
-            try {
-                return JSON.parse(savedCart);
-            } catch (error) {
-                console.error('Error parsing cart from localStorage:', error);
-            }
-        }
-    }
-    return [];
-};
-
 const initialState: CartState = {
-    items: loadCartFromStorage(),
+    items: [],
     isDropdownOpen: false,
 };
 
@@ -64,6 +49,9 @@ const cartSlice = createSlice({
         openDropdown(state) {
             state.isDropdownOpen = true;
         },
+        hydrateCart(state, action: PayloadAction<CartItem[]>) {
+            state.items = action.payload;
+        },
     },
 });
 
@@ -71,7 +59,7 @@ const cartSlice = createSlice({
 const { actions, reducer } = cartSlice;
 
 // Extract and export each action creator by name
-export const { addItem, removeItem, clearCart, toggleDropdown, closeDropdown, openDropdown } = actions;
+export const { addItem, removeItem, clearCart, toggleDropdown, closeDropdown, openDropdown, hydrateCart } = actions;
 
 // Export the reducer, either as a default or named export
 export default reducer;
