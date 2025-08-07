@@ -85,7 +85,8 @@ const Products = () => {
                                 alt={product.name}
                                 width={400}
                                 height={192}
-                                className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                                priority={true}
+                                className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300"
                             />
                             <div className="absolute top-3 right-3 bg-white rounded-full px-2 py-1 shadow-md">
                                 <div className="flex items-center space-x-1">
